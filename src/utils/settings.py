@@ -6,6 +6,8 @@ from src.utils.errors import (
     YamlNotFoundError,
     EnvNotFoundError,
     TokenNotFoundError,
+    ButtonsNotFoundError,
+    MessagesNotFoundError,
 )
 
 PROJECT_ROOT_DIR = Path(__file__).parent.parent.parent
@@ -22,6 +24,13 @@ if not YAML_PATH.exists():
 
 if not ENV_PATH.exists():
     raise EnvNotFoundError(ENV_PATH)
+
+if not BUTTONS_PATH.exists():
+    raise ButtonsNotFoundError(BUTTONS_PATH)
+
+if not MESSAGES_PATH.exists():
+    raise MessagesNotFoundError(MESSAGES_PATH)
+
 
 settings = Dynaconf(
     envvar_prefix=False,

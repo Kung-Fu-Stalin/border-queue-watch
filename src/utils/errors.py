@@ -35,3 +35,13 @@ class EnvNotFoundError(SettingsError):
 class TokenNotFoundError(SettingsError):
     def __init__(self):
         super().__init__("Environment variable TELEGRAM_TOKEN is not set")
+
+
+class ButtonsNotFoundError(SettingsError):
+    def __init__(self, buttons_path):
+        super().__init__(f"Buttons file not found: {buttons_path}")
+
+
+class MessagesNotFoundError(SettingsError):
+    def __init__(self, messages_path):
+        super().__init__(f"Messages file not found: {messages_path}")

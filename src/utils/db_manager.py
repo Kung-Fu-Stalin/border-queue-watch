@@ -12,6 +12,7 @@ from peewee import (
 from src.utils.settings import settings
 from src.utils.logger import get_logger
 
+
 logger = get_logger(__name__)
 
 db = SqliteDatabase(settings.DATABASE_PATH)
@@ -53,14 +54,15 @@ class DatabaseManager:
 
     def _ensure_database(self):
         if not Path(self.db_file):
-            logger.warning(f"database: {self.db_file} does not exist, creating")
+            logger.warning(f"Database: {self.db_file} does not exist, creating")
             self.db.connect()
             self.db.close()
 
     def _ensure_tables(self):
         with DBConnectionContext(self.db):
-            self.db.create_tables([Users], safe=True)
-            logger.info(f"tables: {str(Users).split(" ")[-1][:-1]} created")
+            models = [Users]
+            self.db.create_tables(models, safe=True)
+            logger.info(f"Tables: {str(Users)} created")
 
     def _ensure_columns(self):
         with DBConnectionContext(self.db):
@@ -76,11 +78,11 @@ class DatabaseManager:
 
     def _get_user(self, telegram_user_id):
         try:
-            logger.info(f"getting user: {telegram_user_id}")
+            logger.info(f"Getting user: {telegram_user_id}")
             return Users.get(Users.telegram_user_id == telegram_user_id)
         except Users.DoesNotExist:
             logger.warning(
-                f"user with telegram_user_id {telegram_user_id} does not exist"
+                f"User with telegram_user_id {telegram_user_id} does not exist"
             )
             return None
 
@@ -90,15 +92,15 @@ class DatabaseManager:
     def get_all_users(self):
         users = Users.select()
         users_list = [(u.telegram_user_id, u.telegram_user_name) for u in users]
-        logger.info("a list of all users was received")
+        logger.info("The list of all users was received")
         return users_list
 
     def user_exists(self, telegram_user_id):
         # Add type check after investigation from TelegramAPI side
         if self._get_user(telegram_user_id):
-            logger.info(f"user {telegram_user_id} exist")
+            logger.info(f"User {telegram_user_id} exist")
             return True
-        logger.info(f"user {telegram_user_id} does not exist")
+        logger.info(f"User {telegram_user_id} does not exist")
         return False
 
     def add_user(
@@ -109,11 +111,11 @@ class DatabaseManager:
         telegram_user_name=None,
     ):
         if not isinstance(update_time, int):
-            logger.error(f"incorrect incoming update_time: {update_time}")
-            raise TypeError("update_time must be an integer")
+            logger.error(f"Incorrect incoming update_time: {update_time}")
+            raise TypeError("Update_time must be an integer")
         if not isinstance(checkpoint_name, str):
-            logger.error(f"incorrect incoming checkpoint_name: {checkpoint_name}")
-            raise TypeError("checkpoint_name must be a string")
+            logger.error(f"Incorrect incoming checkpoint_name: {checkpoint_name}")
+            raise TypeError("Checkpoint_name must be a string")
 
         with self.transaction():
             if self.user_exists(telegram_user_id):
@@ -136,15 +138,15 @@ class DatabaseManager:
         with self.transaction():
             user = self._get_user(telegram_user_id)
             if not user:
-                logger.warning(f"user {telegram_user_id} does not exist")
+                logger.warning(f"User {telegram_user_id} does not exist")
                 return False
-            logger.info(f"deleting user: {telegram_user_id}")
+            logger.info(f"Deleting user: {telegram_user_id}")
             return user.delete_instance(recursive=True)
 
     def clear_all(self):
         with self.transaction():
             Users.delete().execute()
-        logger.warning("all users were deleted")
+        logger.warning("All users were deleted")
 
 
 db_manager = DatabaseManager(settings.DATABASE_PATH)
