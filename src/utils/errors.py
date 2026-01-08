@@ -1,6 +1,7 @@
 # Puller exceptions
 class BorderAPIError(Exception):
-    pass
+    def __init__(self, msg):
+        super().__init__(msg)
 
 
 class DataNotFoundError(BorderAPIError):
@@ -8,7 +9,12 @@ class DataNotFoundError(BorderAPIError):
 
 
 class InvalidTransportTypeError(BorderAPIError):
-    pass
+    def __init__(self, transport_type, valid_types):
+        msg = (
+            f"Invalid transport type: '{transport_type}'. "
+            f"Valid types: {valid_types}"
+        )
+        super().__init__(msg)
 
 
 # Settings Error
@@ -16,6 +22,16 @@ class SettingsError(Exception):
     pass
 
 
-# DB Error
-class DBError(Exception):
-    pass
+class YamlNotFoundError(SettingsError):
+    def __init__(self, yaml_path):
+        super().__init__(f"Config file not found: {yaml_path}")
+
+
+class EnvNotFoundError(SettingsError):
+    def __init__(self, env_path):
+        super().__init__(f"Environment file not found: {env_path}")
+
+
+class TokenNotFoundError(SettingsError):
+    def __init__(self):
+        super().__init__("Environment variable TELEGRAM_TOKEN is not set")
