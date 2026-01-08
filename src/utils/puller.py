@@ -79,7 +79,7 @@ class DataPuller:
 
         except requests.exceptions.RequestException as e:
             logger.error(f"Request failed for {endpoint}: {str(e)}")
-            raise BorderAPIError(f"Failed to fetch {endpoint}: {str(e)}", e)
+            raise BorderAPIError(f"Failed to fetch {endpoint}: {str(e)}")
 
         except ValueError:
             logger.error(f"Invalid JSON response from {endpoint}")
@@ -132,10 +132,7 @@ class DataFilter:
     def _validate_transport_type(self):
         if self.transport_type not in self.TRANSPORT_KEYS:
             valid_types = ", ".join(self.TRANSPORT_KEYS.keys())
-            raise InvalidTransportTypeError(
-                f"Invalid transport type: '{self.transport_type}'. "
-                f"Valid types: {valid_types}"
-            )
+            raise InvalidTransportTypeError(self.transport_type, valid_types)
 
     def filter_by_regnum(self) -> Optional[dict[str, Any]]:
         monitoring_data = self.data.get("monitoring")

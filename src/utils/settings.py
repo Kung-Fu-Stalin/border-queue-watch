@@ -1,6 +1,12 @@
 from pathlib import Path
+
 from dynaconf import Dynaconf
 
+from src.utils.errors import (
+    YamlNotFoundError,
+    EnvNotFoundError,
+    TokenNotFoundError,
+)
 
 PROJECT_ROOT_DIR = Path(__file__).parent.parent.parent
 SRC_DIR = Path(PROJECT_ROOT_DIR, "src")
@@ -12,10 +18,10 @@ BUTTONS_PATH = Path(RESOURCES_DIR, "buttons.json").resolve()
 MESSAGES_PATH = Path(RESOURCES_DIR, "messages.json").resolve()
 
 if not YAML_PATH.exists():
-    raise FileNotFoundError(f"Config file not found: {YAML_PATH}")
+    raise YamlNotFoundError(YAML_PATH)
 
 if not ENV_PATH.exists():
-    raise FileNotFoundError(f"Environment file not found: {ENV_PATH}")
+    raise EnvNotFoundError(ENV_PATH)
 
 settings = Dynaconf(
     envvar_prefix=False,
@@ -28,5 +34,5 @@ settings.BUTTONS_PATH = BUTTONS_PATH
 settings.MESSAGES_PATH = MESSAGES_PATH
 settings.DATABASE_PATH = Path(PROJECT_ROOT_DIR, "db.sqlite")
 
-if not settings.TELEGRAM_TOKEN:
-    raise EnvironmentError("Environment variable TELEGRAM_TOKEN is not set")
+if not settings.get("TELEGRAM_TOKEN"):
+    raise TokenNotFoundError()
