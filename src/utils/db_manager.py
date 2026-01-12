@@ -22,7 +22,7 @@ class Users(Model):
     telegram_user_id = CharField(unique=True)
     telegram_user_name = CharField(null=True)
     created_at = DateTimeField(constraints=[SQL("DEFAULT CURRENT_TIMESTAMP")])
-    update_time = IntegerField(null=False)
+    interval_seconds = IntegerField(null=False)
     checkpoint_name = CharField(null=False)
 
     class Meta:
@@ -106,13 +106,13 @@ class DatabaseManager:
     def add_user(
         self,
         telegram_user_id,
-        update_time: int,
+        interval_seconds: int,
         checkpoint_name: str,
         telegram_user_name=None,
     ):
-        if not isinstance(update_time, int):
-            logger.error(f"Incorrect incoming update_time: {update_time}")
-            raise TypeError("Update_time must be an integer")
+        if not isinstance(interval_seconds, int):
+            logger.error(f"Incorrect incoming interval_seconds: {interval_seconds}")
+            raise TypeError("interval_seconds must be an integer")
         if not isinstance(checkpoint_name, str):
             logger.error(f"Incorrect incoming checkpoint_name: {checkpoint_name}")
             raise TypeError("Checkpoint_name must be a string")
@@ -124,13 +124,13 @@ class DatabaseManager:
                 f"Creating user: "
                 f"id:{telegram_user_id}, "
                 f"name: {telegram_user_name}, "
-                f"update_time:{update_time}, "
+                f"interval_seconds:{interval_seconds}, "
                 f"checkpoint_name:{checkpoint_name}"
             )
             return Users.create(
                 telegram_user_id=telegram_user_id,
                 telegram_user_name=telegram_user_name,
-                update_time=update_time,
+                interval_seconds=interval_seconds,
                 checkpoint_name=checkpoint_name,
             )
 

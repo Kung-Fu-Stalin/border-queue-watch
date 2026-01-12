@@ -2,8 +2,15 @@ import logging
 import sys
 
 
-def get_logger(name: str = __name__) -> logging.Logger:
+def get_logger(name: str = __name__, silence: bool = False) -> logging.Logger:
     logger = logging.getLogger(name)
+
+    if silence:
+        logger.setLevel(logging.CRITICAL + 1)
+        logger.handlers.clear()
+        logger.propagate = False
+        return logger
+
     logger.setLevel(logging.DEBUG)
 
     if not logger.handlers:
