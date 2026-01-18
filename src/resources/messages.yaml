@@ -1,0 +1,70 @@
+welcome_message: "Приветственное сообщение"
+choose_checkpoint: "Выберете пограничный переход"
+enter_car_number: "Введите регистрационный номер автомобиля"
+checkpoint_selected: "✅ Переход: {checkpoint}"
+choose_interval_unit: "Выберите единицу времени:"
+choose_interval_value: "Выберите интервал ({unit}):"
+
+# Car number confirmation
+confirm_car_number: "🚗 Номер автомобиля: {car_number}\n\nЭто правильно?"
+car_number_confirmed: "✅ Номер подтвержден! Продолжаем..."
+car_number_rejected: "❌ Вводим номер заново"
+
+# User Actions & Status
+user_created: |
+  ✅ Регистрация завершена!
+  🚗 Автомобиль: {car_number}
+  🔔 Переход: {checkpoint}
+  ⏱️ Интервал: {value} {unit}
+
+  Мониторинг начинается сейчас!
+
+user_exists: "⚠️ Вы уже зарегистрированы. Используйте /start для меню."
+monitoring_stopped: "⏹️ Мониторинг остановлен. Уведомления больше не будут отправляться."
+monitoring_resumed: "✅ Мониторинг возобновлен! Продолжаем отслеживание."
+monitoring_paused: |
+  ⏸️ Ваш мониторинг приостановлен
+
+  🚗 Автомобиль: {car_number}
+  🔔 Переход: {checkpoint}
+  ⏱️ Интервал: {interval}
+
+  Желаете продолжить?
+user_not_found: "❌ Вы не зарегистрированы. Используйте /start для регистрации."
+user_deleted: "🗑️ Все ваши данные удалены. До свидания!"
+
+# Resume menu
+resume_menu: |
+  ⏸️ Ваш мониторинг приостановлен
+
+  🚗 Автомобиль: {car_number}
+  🔔 Переход: {checkpoint}
+  ⏱️ Интервал: {interval}
+
+  Что вы хотите?
+
+registered_menu: |
+  ✅ Вы зарегистрированы!
+
+  🚗 Автомобиль: {car_number}
+  🔔 Переход: {checkpoint}
+  ⏱️ Интервал: {interval}
+
+  Используйте кнопки ниже для управления.
+
+# Input Validation Errors
+invalid_car_number: "❌ Пожалуйста, введите регистрационный номер"
+incomplete_data: "❌ Ошибка: данные не полны. Используйте /start"
+registration_error: "❌ Ошибка при регистрации: {error}"
+deletion_error: "❌ Ошибка при удалении данных: {error}"
+
+# Notifications
+notification_title: "🚗 **{checkpoint}**"
+notification_car_number: "📋 Номер: {car_number}"
+notification_timestamp: "⏰ {timestamp}"
+notification_queue_unavailable: "ℹ️ Данные о очереди недоступны"
+notification_queue_available: "ℹ️ Информация о очереди доступна"
+notification_queue_info: |
+  👥 Очередь: {length}
+  ⏳ Ожидание: {wait_time} мин
+notification_queue_error: "ℹ️ Ошибка при обработке данных"

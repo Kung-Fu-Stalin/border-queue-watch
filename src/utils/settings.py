@@ -8,6 +8,7 @@ from src.utils.errors import (
     TokenNotFoundError,
     ButtonsNotFoundError,
     MessagesNotFoundError,
+    IncorrectParseModeError,
 )
 
 PROJECT_ROOT_DIR = Path(__file__).parent.parent.parent
@@ -17,7 +18,8 @@ RESOURCES_DIR = Path(SRC_DIR, "resources")
 ENV_PATH = Path(PROJECT_ROOT_DIR, ".env")
 YAML_PATH = Path(CONFIG_DIR, "config.yml").resolve()
 BUTTONS_PATH = Path(RESOURCES_DIR, "buttons.json").resolve()
-MESSAGES_PATH = Path(RESOURCES_DIR, "messages.json").resolve()
+MESSAGES_PATH = Path(RESOURCES_DIR, "messages.yaml").resolve()
+PARSE_MODES = ("Markdown", "MarkdownV2")
 
 if not YAML_PATH.exists():
     raise YamlNotFoundError(YAML_PATH)
@@ -45,3 +47,6 @@ settings.DATABASE_PATH = Path(PROJECT_ROOT_DIR, "db.sqlite")
 
 if not settings.get("TELEGRAM_TOKEN"):
     raise TokenNotFoundError()
+
+if settings.PARSE_MODE not in PARSE_MODES:
+    raise IncorrectParseModeError(settings.PARSE_MODE, PARSE_MODES)

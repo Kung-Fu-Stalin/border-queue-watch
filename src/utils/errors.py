@@ -45,3 +45,11 @@ class ButtonsNotFoundError(SettingsError):
 class MessagesNotFoundError(SettingsError):
     def __init__(self, messages_path):
         super().__init__(f"Messages file not found: {messages_path}")
+
+
+class IncorrectParseModeError(SettingsError):
+    def __init__(self, parse_mode, available_modes):
+        super().__init__(
+            f"Incorrect parse mode: {parse_mode}! "
+            f"Available modes: {available_modes}"
+        )
