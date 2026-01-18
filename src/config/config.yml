@@ -1,9 +1,10 @@
 database: bot.db
 default_timeout: 60
 checkpoints:
-  - name: Brest
-    id: a9173a85-3fc0-424c-84f0-defa632481e4
-  - name: Berestovica
-    id: 7e46a2d1-ab2f-11ec-bafb-ac1f6bf889c1
-  - name: Bruzgi
-    id: 3b797d4d-706a-440f-a1a4-826c191e1e36
+  brest: a9173a85-3fc0-424c-84f0-defa632481e4
+  berestovica: 7e46a2d1-ab2f-11ec-bafb-ac1f6bf889c1
+  bruzgi: 3b797d4d-706a-440f-a1a4-826c191e1e36
+wait_time:
+  secs: [1, 5, 10] # For testing purposes only
+  mins: [5, 10, 15]
+  hours: [1, 2, 4]

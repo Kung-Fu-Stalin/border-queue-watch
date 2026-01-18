@@ -17,7 +17,7 @@ RESOURCES_DIR = Path(SRC_DIR, "resources")
 ENV_PATH = Path(PROJECT_ROOT_DIR, ".env")
 YAML_PATH = Path(CONFIG_DIR, "config.yml").resolve()
 BUTTONS_PATH = Path(RESOURCES_DIR, "buttons.json").resolve()
-MESSAGES_PATH = Path(RESOURCES_DIR, "messages.json").resolve()
+MESSAGES_PATH = Path(RESOURCES_DIR, "messages.yaml").resolve()
 
 if not YAML_PATH.exists():
     raise YamlNotFoundError(YAML_PATH)

@@ -22,6 +22,7 @@ class Users(Model):
     telegram_user_id = CharField(unique=True)
     telegram_user_name = CharField(null=True)
     created_at = DateTimeField(constraints=[SQL("DEFAULT CURRENT_TIMESTAMP")])
+    car_number = CharField(null=False)
     interval_seconds = IntegerField(null=False)
     checkpoint_name = CharField(null=False)
 
@@ -62,7 +63,6 @@ class DatabaseManager:
         with DBConnectionContext(self.db):
             models = [Users]
             self.db.create_tables(models, safe=True)
-            logger.info(f"Tables: {str(Users)} created")
 
     def _ensure_columns(self):
         with DBConnectionContext(self.db):
@@ -76,7 +76,8 @@ class DatabaseManager:
                         f"ALTER TABLE users ADD COLUMN {col} {col_type};"
                     )
 
-    def _get_user(self, telegram_user_id):
+    @staticmethod
+    def _get_user(telegram_user_id):
         try:
             logger.info(f"Getting user: {telegram_user_id}")
             return Users.get(Users.telegram_user_id == telegram_user_id)
@@ -95,8 +96,9 @@ class DatabaseManager:
         logger.info("The list of all users was received")
         return users_list
 
-    def user_exists(self, telegram_user_id):
-        # Add type check after investigation from TelegramAPI side
+    def user_exists(self, telegram_user_id: int):
+        if not isinstance(telegram_user_id, int):
+            logger.error("Incorrect incoming")
         if self._get_user(telegram_user_id):
             logger.info(f"User {telegram_user_id} exist")
             return True
@@ -108,6 +110,7 @@ class DatabaseManager:
         telegram_user_id,
         interval_seconds: int,
         checkpoint_name: str,
+        car_number: str,
         telegram_user_name=None,
     ):
         if not isinstance(interval_seconds, int):
@@ -115,7 +118,10 @@ class DatabaseManager:
             raise TypeError("interval_seconds must be an integer")
         if not isinstance(checkpoint_name, str):
             logger.error(f"Incorrect incoming checkpoint_name: {checkpoint_name}")
-            raise TypeError("Checkpoint_name must be a string")
+            raise TypeError("checkpoint_name must be a string")
+        if not isinstance(car_number, str):
+            logger.error(f"Incorrect incoming car_number: {car_number}")
+            raise TypeError("car_number should be a string")
 
         with self.transaction():
             if self.user_exists(telegram_user_id):
@@ -126,12 +132,14 @@ class DatabaseManager:
                 f"name: {telegram_user_name}, "
                 f"interval_seconds:{interval_seconds}, "
                 f"checkpoint_name:{checkpoint_name}"
+                f"car_number:{car_number}"
             )
             return Users.create(
                 telegram_user_id=telegram_user_id,
                 telegram_user_name=telegram_user_name,
                 interval_seconds=interval_seconds,
                 checkpoint_name=checkpoint_name,
+                car_number=car_number,
             )
 
     def delete_user(self, telegram_user_id):
