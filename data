@@ -1,0 +1,19 @@
+statuses
+    case 2:
+      return 'Прибыл в ЗО';
+    case 3:
+      return 'Вызван в ПП';
+    case 9:
+      return 'Аннулирован';
+
+
+Brest: a9173a85-3fc0-424c-84f0-defa632481e4
+Berestavica: 7e46a2d1-ab2f-11ec-bafb-ac1f6bf889c1
+Bruzgi: 3b797d4d-706a-440f-a1a4-826c191e1e36
+
+endpoints:
+https://belarusborder.by/info/monitoring-new?token=test&checkpointId=a9173a85-3fc0-424c-84f0-defa632481e4
+https://belarusborder.by/info/monitoring/statistics?token=test&checkpointId=a9173a85-3fc0-424c-84f0-defa632481e4
+
+cameras:
+https://www.customs.gov.by/veb-kamery/#b1
